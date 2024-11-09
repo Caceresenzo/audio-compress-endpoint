@@ -43,7 +43,15 @@ def lambda_handler(event, context):
 
     input_extension = query_parameters.get("input_extension", "mp3")
     output_extension = query_parameters.get("output_extension", "mp3")
-    output_extension = query_parameters.get("output_extension", "mp3")
+
+    output_bitrate = query_parameters.get("output_bitrate", "96")
+    if not output_bitrate.isnumeric():
+        return {
+            "statusCode": 400,
+            "body": json.dumps({
+                "message": "`output_bitrate` must be a number",
+            }),
+        }
 
     # https://file-examples.com/storage/fe504ae8c8672e49a9e2d51/2017/11/file_example_MP3_5MG.mp3
     file_url = query_parameters.get("file_url")
@@ -88,7 +96,7 @@ def lambda_handler(event, context):
                 "-map",
                 "0:a:0",
                 "-b:a",
-                "96k",
+                f"{output_bitrate}k",
                 temporary_output_file_path,
             ],
         )
