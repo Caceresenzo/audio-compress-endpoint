@@ -119,5 +119,5 @@ def lambda_handler(event, context):
                     "Content-Disposition": 'attachment; filename="output.mp3"',
                 },
                 "isBase64Encoded": True,
-                "body": base64.encodebytes(fd.read()),
+                "body": base64.b64encode(fd.read()).decode('utf-8'),
             }
