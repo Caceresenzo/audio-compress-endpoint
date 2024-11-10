@@ -1,10 +1,10 @@
-# audio-compress
+# audio-compress-endpoint
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
-- hello_world - Code for the application's Lambda function.
+- hello-world - Code for the application's Lambda function.
 - events - Invocation events that you can use to invoke the function.
-- tests - Unit tests for the application code. 
+- hello-world/tests - Unit tests for the application code. 
 - template.yaml - A template that defines the application's AWS resources.
 
 The application uses several AWS resources, including Lambda functions and an API Gateway API. These resources are defined in the `template.yaml` file in this project. You can update the template to add AWS resources through the same deployment process that updates your application code.
@@ -31,13 +31,13 @@ The Serverless Application Model Command Line Interface (SAM CLI) is an extensio
 To use the SAM CLI, you need the following tools.
 
 * SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
-* [Python 3 installed](https://www.python.org/downloads/)
+* Node.js - [Install Node.js 20](https://nodejs.org/en/), including the NPM package management tool.
 * Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
 
 To build and deploy your application for the first time, run the following in your shell:
 
 ```bash
-sam build --use-container
+sam build
 sam deploy --guided
 ```
 
@@ -53,27 +53,27 @@ You can find your API Gateway Endpoint URL in the output values displayed after 
 
 ## Use the SAM CLI to build and test locally
 
-Build your application with the `sam build --use-container` command.
+Build your application with the `sam build` command.
 
 ```bash
-audio-compress$ sam build --use-container
+audio-compress-endpoint$ sam build
 ```
 
-The SAM CLI installs dependencies defined in `hello_world/requirements.txt`, creates a deployment package, and saves it in the `.aws-sam/build` folder.
+The SAM CLI installs dependencies defined in `hello-world/package.json`, creates a deployment package, and saves it in the `.aws-sam/build` folder.
 
 Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the `events` folder in this project.
 
 Run functions locally and invoke them with the `sam local invoke` command.
 
 ```bash
-audio-compress$ sam local invoke HelloWorldFunction --event events/event.json
+audio-compress-endpoint$ sam local invoke HelloWorldFunction --event events/event.json
 ```
 
 The SAM CLI can also emulate your application's API. Use the `sam local start-api` to run the API locally on port 3000.
 
 ```bash
-audio-compress$ sam local start-api
-audio-compress$ curl http://localhost:3000/
+audio-compress-endpoint$ sam local start-api
+audio-compress-endpoint$ curl http://localhost:3000/
 ```
 
 The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The `Events` property on each function's definition includes the route and method for each path.
@@ -97,22 +97,19 @@ To simplify troubleshooting, SAM CLI has a command called `sam logs`. `sam logs`
 `NOTE`: This command works for all AWS Lambda functions; not just the ones you deploy using SAM.
 
 ```bash
-audio-compress$ sam logs -n HelloWorldFunction --stack-name "audio-compress" --tail
+audio-compress-endpoint$ sam logs -n HelloWorldFunction --stack-name audio-compress-endpoint --tail
 ```
 
 You can find more information and examples about filtering Lambda function logs in the [SAM CLI Documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-logging.html).
 
-## Tests
+## Unit tests
 
-Tests are defined in the `tests` folder in this project. Use PIP to install the test dependencies and run tests.
+Tests are defined in the `hello-world/tests` folder in this project. Use NPM to install the [Mocha test framework](https://mochajs.org/) and run unit tests.
 
 ```bash
-audio-compress$ pip install -r tests/requirements.txt --user
-# unit test
-audio-compress$ python -m pytest tests/unit -v
-# integration test, requiring deploying the stack first.
-# Create the env variable AWS_SAM_STACK_NAME with the name of the stack we are testing
-audio-compress$ AWS_SAM_STACK_NAME="audio-compress" python -m pytest tests/integration -v
+audio-compress-endpoint$ cd hello-world
+hello-world$ npm install
+hello-world$ npm run test
 ```
 
 ## Cleanup
@@ -120,7 +117,7 @@ audio-compress$ AWS_SAM_STACK_NAME="audio-compress" python -m pytest tests/integ
 To delete the sample application that you created, use the AWS CLI. Assuming you used your project name for the stack name, you can run the following:
 
 ```bash
-sam delete --stack-name "audio-compress"
+sam delete --stack-name audio-compress-endpoint
 ```
 
 ## Resources
