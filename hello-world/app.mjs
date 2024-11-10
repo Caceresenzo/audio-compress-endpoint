@@ -1,9 +1,9 @@
+import childProcess from "child_process";
 import fs from "fs";
 import os from "os";
 import path from "path";
-import childProcess from "child_process";
-import util from "util";
 import stream from "stream";
+import util from "util";
 
 const pipeline = util.promisify(stream.pipeline);
 
@@ -22,7 +22,7 @@ async function downloadFile(url, filePath) {
 }
 
 async function asError(responseStream, code, body) {
-  console.error({ code, body })
+  console.error({ code, body });
 
   const metadata = {
     statusCode: code,
