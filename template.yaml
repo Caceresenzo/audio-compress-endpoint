@@ -10,6 +10,11 @@ Globals:
   Function:
     Timeout: 300
 
+Parameters:
+  FfmpegLayerArn:
+    Description: Information about the parameter
+    Type: String
+
 Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -23,6 +28,8 @@ Resources:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM
       MemorySize: 1024
+      Layers:
+        - !Ref FfmpegLayerArn
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
